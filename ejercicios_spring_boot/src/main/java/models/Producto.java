@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 
 @Document(collection = "productos")
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Producto {
 
     @Id
@@ -21,21 +18,26 @@ public class Producto {
     @NotBlank
     private String nombre;
 
-    private CategoriaProducto categoria;
+    private String categoria;
 
     @NotNull
     private Double precio;
 
+    private String descripcion;
+
     private String unidad;
 
-    @Builder.Default
-    private Integer stock = 0;
+    private Integer stock;
 
-    @Builder.Default
-    private LocalDateTime creadoEn = LocalDateTime.now();
+    public Producto save(Producto producto) {
+        throw new UnsupportedOperationException("El producto no se ha guardado");
+    }
 
-    public enum CategoriaProducto {
-        CERAMICA, PEGASUPER, PORCELANA,
-        ENCHAPE, ACCESORIO
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(int i) {
+        this.stock = i;
     }
 }

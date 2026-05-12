@@ -6,19 +6,23 @@ import jakarta.validation.constraints.*;
 
 @Data
 public class ProductoDto {
-    @NotBlank(message = "Nombre requerido")
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
-    @NotNull
-    private Producto.CategoriaProducto categoria;
+    private String descripcion;
 
-    @NotNull @Positive
+    @NotNull(message = "El precio es obligatorio")
+    @Min(value = 0, message = "El precio no puede ser negativo")
     private Double precio;
 
-    @NotBlank
-    private String unidad;
 
-    @NotNull @PositiveOrZero
+    @NotNull(message = "El stock es obligatorio")
+    @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
-}
 
+    
+
+    @NotBlank(message = "La categoría es obligatoria")
+
+    private String categoria;
+}

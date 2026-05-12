@@ -1,25 +1,18 @@
 package repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 import models.Producto;
 
-@Repository
-public interface ProductoRepository
-    extends MongoRepository<Producto, String> {
+public interface ProductoRepository extends MongoRepository<Producto, String>{
 
-    List<Producto> findByCategoria(
-        Producto.CategoriaProducto categoria);
+    Optional<Producto> findById(String id);
+    Optional<List<Producto>> findByNombreContainingIgnoreCase(String nombre);
+    Optional<List<Producto>> findByCategoria(String categoria);
 
-    List<Producto> findByNombreContainingIgnoreCase(
-        String nombre);
+    Optional<List<Producto>> findByStockLessThan(int umbral);
 
-    List<Producto> findByStockLessThan(int umbral);
-
-    List<Producto> findByStockEquals(int stock);
 }
-
-

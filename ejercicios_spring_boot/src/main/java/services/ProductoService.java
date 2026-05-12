@@ -1,6 +1,6 @@
 package services;
-
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -12,52 +12,36 @@ import repositories.ProductoRepository;
 @Service
 @RequiredArgsConstructor
 public class ProductoService {
+    
+        private final ProductoRepository productoRepository;
 
-    private final ProductoRepository repo;
-
-    public List<Producto> listar() {
-        return repo.findAll();
+    public Optional<List<Producto>> listar() {
+        return Optional.ofNullable(productoRepository.findAll());
     }
 
-    public List<Producto> porCategoria(
-        Producto.CategoriaProducto cat) {
-        return repo.findByCategoria(cat);
+    public Producto crearProducto(Producto producto) {
+        return productoRepository.save(producto);
     }
 
-    public List<Producto> buscar(String nombre) {
-        return repo.findByNombreContainingIgnoreCase(
-            nombre);
+
+    public Optional<List<Producto>> buscar(String nombre) {
+        return productoRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
-    public List<Producto> stockBajo(int umbral) {
-        return repo.findByStockLessThan(umbral);
+    public Optional<List<Producto>> porCategoria(String categoria) {
+        return productoRepository.findByCategoria(categoria);
     }
 
-    public Producto crear(ProductoDto dto) {
-        Producto p = Producto.builder()
-            .nombre(dto.getNombre())
-            .categoria(dto.getCategoria())
-            .precio(dto.getPrecio())
-            .unidad(dto.getUnidad())
-            .stock(dto.getStock())
-            .build();
-        return repo.save(p);
+    public Optional<List<Producto>> stockBajo(int umbral) {
+        return productoRepository.findByStockLessThan(umbral);
     }
 
-    public Producto actualizar(String id,
-        ProductoDto dto) {
-        Producto p = repo.findById(id)
-            .orElseThrow(() -> new RuntimeException(
-                "Producto no encontrado"));
-        p.setNombre(dto.getNombre());
-        p.setCategoria(dto.getCategoria());
-        p.setPrecio(dto.getPrecio());
-        p.setUnidad(dto.getUnidad());
-        p.setStock(dto.getStock());
-        return repo.save(p);
+    public Producto obtenerPorId(String id) {
+        return productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + id));
     }
 
     public void eliminar(String id) {
-        repo.deleteById(id);
+        throw new UnsupportedOperationException("Unimplemented method 'eliminar'");
     }
 }

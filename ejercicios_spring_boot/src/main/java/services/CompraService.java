@@ -20,44 +20,60 @@ public class CompraService {
     private final ProductoRepository productoRepo;
 
     public Compra crear(CompraDto dto) {
+
         List<Compra.ItemCompra> items = new ArrayList<>();
         double total = 0;
 
         for (CompraDto.ItemCompraDto item : dto.getItems()) {
+
             Producto p = productoRepo
-                .findById(item.getProductoId())
-                .orElseThrow(() -> new RuntimeException(
-                    "Producto no encontrado: "
-                    + item.getProductoId()));
+                    .findById(item.getProductoId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Producto no encontrado: "
+                                    + item.getProductoId()));
 
-            if (p.getStock() < item.getCantidad())
+            // Validar stock
+            if (p.getStock() < item.getCantidad()) {
+
                 throw new RuntimeException(
-                    "Stock insuficiente: " + p.getNombre());
+                        "Stock insuficiente: "
+                                + p.getNombre());
+            }
 
-            double subtotal = p.getPrecio()
-                * item.getCantidad();
+            // Calcular subtotal
+            double subtotal =
+                    p.getPrecio() * item.getCantidad();
+
             total += subtotal;
 
-            p.setStock(p.getStock() - item.getCantidad());
+            // Descontar stock
+            p.setStock(
+                    p.getStock() - item.getCantidad());
+
+            // Guardar producto actualizado
             productoRepo.save(p);
 
-            items.add(Compra.ItemCompra.builder()
-                .productoId(p.getId())
-                .nombreProducto(p.getNombre())
-                .cantidad(item.getCantidad())
-                .precioUnitario(p.getPrecio())
-                .subtotal(subtotal)
-                .build());
+            // Crear item de compra
+            items.add(
+                    Compra.ItemCompra.builder()
+                            .productoId(p.getId())
+                            .nombreProducto(p.getNombre())
+                            .cantidad(item.getCantidad())
+                            .precioUnitario(p.getPrecio())
+                            .subtotal(subtotal)
+                            .build());
         }
 
+        // Crear compra
         Compra compra = Compra.builder()
-            .clienteNombre(dto.getClienteNombre())
-            .clienteEmail(dto.getClienteEmail())
-            .clienteTelefono(dto.getClienteTelefono())
-            .items(items)
-            .total(total)
-            .build();
+                .clienteNombre(dto.getClienteNombre())
+                .clienteEmail(dto.getClienteEmail())
+                .clienteTelefono(dto.getClienteTelefono())
+                .items(items)
+                .total(total)
+                .build();
 
+        // Guardar compra
         return compraRepo.save(compra);
     }
 
@@ -69,4 +85,3 @@ public class CompraService {
         return compraRepo.findByClienteEmail(email);
     }
 }
-

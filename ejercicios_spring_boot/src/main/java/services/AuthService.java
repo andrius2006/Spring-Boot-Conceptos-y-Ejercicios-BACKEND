@@ -4,7 +4,7 @@ import models.Usuario;
 import dto.LoginDto;
 import dto.RegisterDto;
 import services.AuthService;
-import security.JwtService;
+import security.JwtUtil;
 import repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +20,7 @@ public class AuthService {
 
     private final UsuarioRepository usuarioRepo;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final JwtUtil jwtUtil;
     private final AuthenticationManager authManager;
 
     public String login(LoginDto dto) {
@@ -32,7 +32,7 @@ public class AuthService {
         Usuario usuario = usuarioRepo
             .findByEmail(dto.getEmail())
             .orElseThrow();
-        return jwtService.generateToken(usuario.getEmail());
+        return jwtUtil.generateToken(usuario.getEmail());
     }
 
     public String register(RegisterDto dto) {
@@ -46,7 +46,7 @@ public class AuthService {
             .build();
 
         usuarioRepo.save(nuevo);
-        return jwtService.generateToken(nuevo.getEmail());
+        return jwtUtil.generateToken(nuevo.getEmail());
     }
 }
 
