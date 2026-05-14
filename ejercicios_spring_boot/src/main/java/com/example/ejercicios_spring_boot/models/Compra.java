@@ -1,4 +1,4 @@
-package models;
+package com.example.ejercicios_spring_boot.models;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Compra {
-    
+
     @Id
     private String id;
 

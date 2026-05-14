@@ -1,7 +1,7 @@
-package mappers;
+package com.example.ejercicios_spring_boot.mappers;
 
-import dto.ProductoDto;
-import models.Producto;
+import com.example.ejercicios_spring_boot.dto.ProductoDto;
+import com.example.ejercicios_spring_boot.models.Producto;
 
 public class ProductoMapper {
 

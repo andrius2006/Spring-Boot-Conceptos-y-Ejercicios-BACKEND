@@ -1,19 +1,19 @@
-package services;
+package com.example.ejercicios_spring_boot.services;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import dto.ProductoDto;
 import lombok.RequiredArgsConstructor;
-import models.Producto;
-import repositories.ProductoRepository;
+import com.example.ejercicios_spring_boot.models.Producto;
+import com.example.ejercicios_spring_boot.repositories.ProductoRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ProductoService {
-    
-        private final ProductoRepository productoRepository;
+
+    private final ProductoRepository productoRepository;
 
     public Optional<List<Producto>> listar() {
         return Optional.ofNullable(productoRepository.findAll());
@@ -22,7 +22,6 @@ public class ProductoService {
     public Producto crearProducto(Producto producto) {
         return productoRepository.save(producto);
     }
-
 
     public Optional<List<Producto>> buscar(String nombre) {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);

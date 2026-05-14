@@ -1,0 +1,86 @@
+package com.example.ejercicios_spring_boot.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.ejercicios_spring_boot.dto.CompraDto;
+import lombok.RequiredArgsConstructor;
+import com.example.ejercicios_spring_boot.models.Compra;
+import com.example.ejercicios_spring_boot.models.Producto;
+import com.example.ejercicios_spring_boot.repositories.CompraRepository;
+import com.example.ejercicios_spring_boot.repositories.ProductoRepository;
+
+@Service
+@RequiredArgsConstructor
+public class CompraService {
+
+        private final CompraRepository compraRepo;
+        private final ProductoRepository productoRepo;
+
+        public Compra crear(CompraDto dto) {
+
+                List<Compra.ItemCompra> items = new ArrayList<>();
+                double total = 0;
+
+                for (CompraDto.ItemCompraDto item : dto.getItems()) {
+
+                        Producto p = productoRepo
+                                        .findById(item.getProductoId())
+                                        .orElseThrow(() -> new RuntimeException(
+                                                        "Producto no encontrado: "
+                                                                        + item.getProductoId()));
+
+                        // Validar stock
+                        if (p.getStock() < item.getCantidad()) {
+
+                                throw new RuntimeException(
+                                                "Stock insuficiente: "
+                                                                + p.getNombre());
+                        }
+
+                        // Calcular subtotal
+                        double subtotal = p.getPrecio() * item.getCantidad();
+
+                        total += subtotal;
+
+                        // Descontar stock
+                        p.setStock(
+                                        p.getStock() - item.getCantidad());
+
+                        // Guardar producto actualizado
+                        productoRepo.save(p);
+
+                        // Crear item de compra
+                        items.add(
+                                        Compra.ItemCompra.builder()
+                                                        .productoId(p.getId())
+                                                        .nombreProducto(p.getNombre())
+                                                        .cantidad(item.getCantidad())
+                                                        .precioUnitario(p.getPrecio())
+                                                        .subtotal(subtotal)
+                                                        .build());
+                }
+
+                // Crear compra
+                Compra compra = Compra.builder()
+                                .clienteNombre(dto.getClienteNombre())
+                                .clienteEmail(dto.getClienteEmail())
+                                .clienteTelefono(dto.getClienteTelefono())
+                                .items(items)
+                                .total(total)
+                                .build();
+
+                // Guardar compra
+                return compraRepo.save(compra);
+        }
+
+        public List<Compra> listar() {
+                return compraRepo.findAll();
+        }
+
+        public List<Compra> porCliente(String email) {
+                return compraRepo.findByClienteEmail(email);
+        }
+}

@@ -1,4 +1,4 @@
-package config;
+package com.example.ejercicios_spring_boot.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 
 import com.mongodb.client.MongoClient;
 
-
-
 @Component
-public class MongoDatabaseValidator  implements CommandLineRunner {
-private final MongoClient mongoClient;
+public class MongoDatabaseValidator implements CommandLineRunner {
+    private final MongoClient mongoClient;
 
     public MongoDatabaseValidator(MongoClient mongoClient) {
         this.mongoClient = mongoClient;
@@ -24,11 +22,10 @@ private final MongoClient mongoClient;
                 .listDatabaseNames()
                 .into(new ArrayList<>());
 
-        if (!databases.contains("CUTFLOW")) {
-            throw new RuntimeException("ERROR: La base de datos 'CUTFLOW' no existe en MongoDB");
+        if (!databases.contains("inventariodb")) {
+            throw new RuntimeException("ERROR: La base de datos 'inventariodb' no existe en MongoDB");
         }
 
-        System.out.println("Base de datos 'CUTFLOW' verificada correctamente.");
+        System.out.println("Base de datos 'inventariodb' verificada correctamente.");
     }
 }
-

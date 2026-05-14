@@ -1,4 +1,4 @@
-package dto;
+package com.example.ejercicios_spring_boot.dto;
 
 import lombok.Data;
 
@@ -9,4 +9,3 @@ public class RegisterDto {
     private String email;
     private String password;
 }
-

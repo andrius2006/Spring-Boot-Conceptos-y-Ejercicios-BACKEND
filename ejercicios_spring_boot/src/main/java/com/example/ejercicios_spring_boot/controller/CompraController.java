@@ -1,4 +1,4 @@
-package controller;
+package com.example.ejercicios_spring_boot.controller;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dto.CompraDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import models.Compra;
-import services.CompraService;
+import com.example.ejercicios_spring_boot.dto.CompraDto;
+import com.example.ejercicios_spring_boot.models.Compra;
+import com.example.ejercicios_spring_boot.services.CompraService;
 
 @RestController
 @RequestMapping("/api/compras")
@@ -27,7 +27,7 @@ public class CompraController {
 
     @PostMapping
     public ResponseEntity<Compra> crear(
-        @Valid @RequestBody CompraDto dto) {
+            @Valid @RequestBody CompraDto dto) {
         return ResponseEntity.ok(service.crear(dto));
     }
 
@@ -38,10 +38,8 @@ public class CompraController {
 
     @GetMapping("/cliente")
     public ResponseEntity<List<Compra>> porCliente(
-        @RequestParam String email) {
+            @RequestParam String email) {
         return ResponseEntity.ok(
-            service.porCliente(email));
+                service.porCliente(email));
     }
 }
-
-

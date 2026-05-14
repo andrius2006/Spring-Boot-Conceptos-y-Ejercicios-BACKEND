@@ -1,4 +1,4 @@
-package security;  // ← CORRECCIÓN
+package com.example.ejercicios_spring_boot.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,7 +18,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .subject(documento)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24))
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24)) // 24h
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -29,6 +29,22 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token, String username) {
         return extraerDocumento(token).equals(username) && !isTokenExpired(token);
+    }
+
+    // ✅ FIX: Antes lanzaba UnsupportedOperationException — ahora sí retorna el
+    // username
+    // Valida firma y expiración; retorna el username si es válido, null si no
+    public String validateTokenAndGetUsername(String token) {
+        try {
+            String username = extraerDocumento(token);
+            if (username != null && !isTokenExpired(token)) {
+                return username;
+            }
+            return null;
+        } catch (Exception e) {
+            // Token malformado, firma inválida o expirado → retorna null
+            return null;
+        }
     }
 
     private boolean isTokenExpired(String token) {

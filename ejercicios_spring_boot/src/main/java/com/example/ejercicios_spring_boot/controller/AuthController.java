@@ -1,9 +1,8 @@
-package controller;
+package com.example.ejercicios_spring_boot.controller;
 
-import dto.LoginDto;
-import dto.RegisterDto;
-import services.AuthService;
-
+import com.example.ejercicios_spring_boot.dto.LoginDto;
+import com.example.ejercicios_spring_boot.dto.RegisterDto;
+import com.example.ejercicios_spring_boot.services.AuthService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,22 +13,20 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 
-public class AuthControlle {
+public class AuthController {
     private final AuthService authService;
-    
+
     @PostMapping("/register")
     public ResponseEntity<?> register(
-        @RequestBody RegisterDto dto) {
+            @RequestBody RegisterDto dto) {
         return ResponseEntity.ok(
-            authService.register(dto));
+                authService.register(dto));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-        @RequestBody LoginDto dto) {
+            @RequestBody LoginDto dto) {
         return ResponseEntity.ok(
-            authService.login(dto));
+                authService.login(dto));
     }
 }
-
-

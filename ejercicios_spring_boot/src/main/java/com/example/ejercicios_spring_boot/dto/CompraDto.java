@@ -1,4 +1,4 @@
-package dto;
+package com.example.ejercicios_spring_boot.dto;
 
 import java.util.List;
 import jakarta.validation.constraints.Email;
@@ -17,7 +17,8 @@ public class CompraDto {
     @NotBlank
     private String clienteNombre;
 
-    @Email @NotBlank
+    @Email
+    @NotBlank
     private String clienteEmail;
 
     private String clienteTelefono;
@@ -30,8 +31,8 @@ public class CompraDto {
         @NotBlank
         private String productoId;
 
-        @NotNull @Positive
+        @NotNull
+        @Positive
         private Integer cantidad;
     }
 }
-

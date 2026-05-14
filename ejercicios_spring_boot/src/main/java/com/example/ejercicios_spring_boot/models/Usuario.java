@@ -1,4 +1,4 @@
-package models; 
+package com.example.ejercicios_spring_boot.models;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+
 @Document(collection = "usuarios")
 @Data
 @Builder
@@ -33,5 +34,3 @@ public class Usuario {
         USER, ADMIN
     }
 }
-
-

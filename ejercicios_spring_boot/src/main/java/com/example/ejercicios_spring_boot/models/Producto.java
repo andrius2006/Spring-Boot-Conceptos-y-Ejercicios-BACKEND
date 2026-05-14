@@ -1,4 +1,4 @@
-package models;
+package com.example.ejercicios_spring_boot.models;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,10 +6,11 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @Document(collection = "productos")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Producto {
 
     @Id
@@ -27,17 +28,17 @@ public class Producto {
 
     private String unidad;
 
-    private Integer stock;
 
     public Producto save(Producto producto) {
         throw new UnsupportedOperationException("El producto no se ha guardado");
     }
 
-    public Integer getStock() {
-        return stock;
+ // Métodos de conveniencia para CompraService
+    public int getStock() {
+        return unidad != null ? Integer.parseInt(unidad) : 0;
     }
 
-    public void setStock(int i) {
-        this.stock = i;
+    public void setStock(int nuevoStock) {
+        this.unidad = String.valueOf(nuevoStock);
     }
 }

@@ -1,4 +1,4 @@
-package config;
+package com.example.ejercicios_spring_boot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
